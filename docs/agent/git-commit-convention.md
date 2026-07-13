@@ -17,7 +17,7 @@ Follow the [Conventional Commits 1.0.0](https://www.conventionalcommits.org/en/v
 - **Type prefix** (required): `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`, `revert`
 - **Scope** (optional): noun in parentheses, e.g. `feat(api):`, `fix(parser):`
 - **Breaking change**: append `!` before the colon, e.g. `feat!:`, `feat(api)!:`
-- **Description** (required): imperative mood, capitalized, no trailing period
+- **Description** (required): imperative mood, capitalize its first word immediately after the `: ` prefix, no trailing period
   - Must complete the sentence: "If applied, this commit will ___"
   - Examples: `Add Polish language`, `Fix array parsing issue`, `Drop support for Node 6`
 - **Soft length limit**: aim for 50 characters total (including type prefix). 72 is the hard limit — GitHub truncates beyond this. The type prefix counts toward the limit, so keep descriptions tight.
@@ -36,7 +36,7 @@ Follow the [Conventional Commits 1.0.0](https://www.conventionalcommits.org/en/v
 ### Example
 
 ```
-feat(auth): add OAuth2 login flow
+feat(auth): Add OAuth2 login flow
 
 - Introduce OAuth2 provider abstraction for Google and GitHub
 - Add token refresh logic with sliding expiration
@@ -57,6 +57,7 @@ users.
 
 - Subject longer than 72 characters
 - Subject in past tense or descriptive mood ("Fixed bug", "Adding feature")
+- Lowercase first word after the `: ` prefix ("feat: add feature")
 - Subject ending with a period
 - Body that restates the diff line-by-line
 - Granular bullet lists of trivial changes (e.g. "Update import", "Rename variable")
