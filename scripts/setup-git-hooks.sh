@@ -21,6 +21,20 @@ GIT_MAJOR="${GIT_VERSION%%.*}"
 GIT_MINOR="${GIT_VERSION#*.}"
 GIT_MINOR="${GIT_MINOR%%.*}"
 
+case "$GIT_VERSION" in
+    *.*) ;;
+    *)
+        printf 'Error: unsupported Git version format: %s\n' "$GIT_VERSION" >&2
+        exit 1
+        ;;
+esac
+case "$GIT_MAJOR:$GIT_MINOR" in
+    *[!0-9:]*|:*|*:)
+        printf 'Error: unsupported Git version format: %s\n' "$GIT_VERSION" >&2
+        exit 1
+        ;;
+esac
+
 if [ "$GIT_MAJOR" -lt "$REQUIRED_GIT_MAJOR" ] || { [ "$GIT_MAJOR" -eq "$REQUIRED_GIT_MAJOR" ] && [ "$GIT_MINOR" -lt "$REQUIRED_GIT_MINOR" ]; }; then
     printf 'Error: Git %s.%s or later is required (found %s).\n' "$REQUIRED_GIT_MAJOR" "$REQUIRED_GIT_MINOR" "$GIT_VERSION" >&2
     exit 1

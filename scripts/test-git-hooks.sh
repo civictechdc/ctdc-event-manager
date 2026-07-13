@@ -86,7 +86,7 @@ run_path_with_spaces_test() (
     WORK_DIR="$(mktemp -d)"
     trap 'rm -rf "$WORK_DIR"' EXIT
 
-    REPO_DIR="$WORK_DIR/repo with spaces"
+    REPO_DIR="$WORK_DIR/repo with space's"
     mkdir -p "$REPO_DIR/scripts" "$REPO_DIR/bin"
 
     cp "$SETUP_SRC" "$REPO_DIR/scripts/setup-git-hooks.sh"
@@ -195,8 +195,51 @@ EOF
     printf 'PASS: Git version gate\n'
 )
 
+run_unsupported_git_version_test() (
+    WORK_DIR="$(mktemp -d)"
+    trap 'rm -rf "$WORK_DIR"' EXIT
+
+    REPO_DIR="$WORK_DIR/repo"
+    mkdir -p "$REPO_DIR/scripts" "$REPO_DIR/bin"
+    cp "$SETUP_SRC" "$REPO_DIR/scripts/setup-git-hooks.sh"
+
+    real_bun="$(command -v bun)"
+    real_git="$(command -v git)"
+    cat > "$REPO_DIR/bin/bun" <<EOF
+#!/bin/sh
+exec "$real_bun" "\$@"
+EOF
+    chmod +x "$REPO_DIR/bin/bun"
+
+    cat > "$REPO_DIR/bin/git" <<EOF
+#!/bin/sh
+if [ "\$1" = "--version" ]; then
+    echo "git version Apple Git-154"
+    exit 0
+fi
+exec "$real_git" "\$@"
+EOF
+    chmod +x "$REPO_DIR/bin/git"
+
+    cd "$REPO_DIR"
+    export PATH="$REPO_DIR/bin:$PATH"
+    git init -q
+
+    stderr_file="$WORK_DIR/stderr.txt"
+    if sh scripts/setup-git-hooks.sh 2>"$stderr_file"; then
+        fail "installer should reject unsupported Git version output"
+    fi
+
+    if ! grep -q "unsupported Git version format" "$stderr_file"; then
+        fail "installer did not explain unsupported Git version output: $(cat "$stderr_file")"
+    fi
+
+    printf 'PASS: unsupported Git version gate\n'
+)
+
 run_basic_test
 run_path_with_spaces_test
 run_git_version_gate_test
+run_unsupported_git_version_test
 
 printf 'PASS: all tests\n'
