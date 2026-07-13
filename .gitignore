@@ -53,3 +53,5 @@ temp/
 
 # Project
 AGENTS.local.md
+.agent/.env
+.agents/local/
