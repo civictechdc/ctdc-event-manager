@@ -1,0 +1,28 @@
+[
+  {
+    "label": "Debug: CLI help (Node + tsx)",
+    "adapter": "JavaScript",
+    "type": "node",
+    "request": "launch",
+    "runtimeExecutable": "node",
+    "runtimeArgs": ["--import", "tsx"],
+    "program": "$ZED_WORKTREE_ROOT/src/index.ts",
+    "args": ["--help"],
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "stopOnEntry": true,
+    "skipFiles": ["<node_internals>/**"]
+  },
+  {
+    "label": "Debug: CLI interactive (Node + tsx)",
+    "adapter": "JavaScript",
+    "type": "node",
+    "request": "launch",
+    "runtimeExecutable": "node",
+    "runtimeArgs": ["--import", "tsx"],
+    "program": "$ZED_WORKTREE_ROOT/src/index.ts",
+    "args": [],
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "stopOnEntry": true,
+    "skipFiles": ["<node_internals>/**"]
+  }
+]

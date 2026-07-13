@@ -1,0 +1,35 @@
+{
+  "ensure_final_newline_on_save": true,
+  "format_on_save": "off",
+  "terminal": {
+    "working_directory": "current_project_directory"
+  },
+  "languages": {
+    "TypeScript": {
+      "tab_size": 2,
+      "hard_tabs": false,
+      "language_servers": ["!oxfmt", "..."]
+    },
+    "JavaScript": {
+      "tab_size": 2,
+      "hard_tabs": false,
+      "language_servers": ["!oxfmt", "..."]
+    },
+    "JSON": {
+      "tab_size": 2,
+      "hard_tabs": false,
+      "language_servers": ["!oxfmt", "..."]
+    },
+    "JSONC": {
+      "language_servers": ["!oxfmt", "..."]
+    },
+    "YAML": {
+      "tab_size": 2,
+      "hard_tabs": false,
+      "language_servers": ["!oxfmt", "..."]
+    },
+    "Markdown": {
+      "language_servers": ["!oxfmt", "..."]
+    }
+  }
+}
