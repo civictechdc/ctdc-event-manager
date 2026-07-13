@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  event-publisher-dev:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.dev
+    container_name: event-publisher-dev
+    volumes:
+      - ../src:/app/src:ro
+      - ../tests:/app/tests:ro
+      - ../package.json:/app/package.json:ro
+      - ../tsconfig.json:/app/tsconfig.json:ro
+      - ../vitest.config.ts:/app/vitest.config.ts:ro
+    env_file:
+      - ../.env.dev.local
+    command: bun run test:watch
+    stdin_open: true
+    tty: true
+
+  event-publisher-cli:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.dev
+    container_name: event-publisher-cli
+    volumes:
+      - ../src:/app/src:ro
+      - ../tests:/app/tests:ro
+      - ../package.json:/app/package.json:ro
+      - ../tsconfig.json:/app/tsconfig.json:ro
+    env_file:
+      - ../.env.dev.local
+    command: bun run dev --help
+    profiles:
+      - cli
+
+  redis:
+    image: redis:7-alpine
+    container_name: event-publisher-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    profiles:
+      - cache
+
+volumes:
+  redis-data:
+    driver: local

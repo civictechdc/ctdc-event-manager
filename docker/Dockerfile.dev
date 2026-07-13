@@ -1,0 +1,14 @@
+FROM node:20-alpine
+
+WORKDIR /app
+
+RUN npm install -g bun
+
+COPY package.json bun.lock ./
+RUN bun install
+
+COPY . .
+
+RUN bun run build
+
+CMD ["bun", "run", "dev"]

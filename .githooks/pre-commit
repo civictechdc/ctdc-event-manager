@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+blocked_patterns=(
+	'.agent/skills/'
+	'.agents/skills/'
+)
+
+staged_files=$(git diff --cached --name-only --diff-filter=ACM)
+
+if [ -z "$staged_files" ]; then
+	exit 0
+fi
+
+violations=""
+while IFS= read -r file; do
+	for pattern in "${blocked_patterns[@]}"; do
+		if [[ "$file" == "$pattern"* ]]; then
+			violations="${violations}  ${file}\n"
+		fi
+	done
+done <<< "$staged_files"
+
+if [ -n "$violations" ]; then
+	echo "ERROR: The following staged files are in blocked skill directories:" >&2
+	printf "%b" "$violations" >&2
+	echo "" >&2
+	echo "Skill directories (.agent/skills/, .agents/skills/) must not be" >&2
+	echo "committed to source control. They contain local agent configuration." >&2
+	echo "" >&2
+	echo "To fix: unstage these files with 'git restore --staged <file>'" >&2
+	echo "or add them to .gitignore." >&2
+	exit 1
+fi
+
+exit 0

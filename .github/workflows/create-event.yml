@@ -1,0 +1,204 @@
+name: Create Event
+
+on:
+  workflow_dispatch:
+    inputs:
+      template:
+        description: 'Event template to use'
+        required: true
+        default: 'taoti-project-night'
+        type: choice
+        options:
+          - taoti-project-night
+          - virtru-project-night
+          - prefect-project-night
+      date:
+        description: 'Event date (YYYY-MM-DD)'
+        required: true
+        type: string
+      time:
+        description: 'Start time (HH:mm, 24-hour format)'
+        required: false
+        default: '18:00'
+        type: string
+      duration:
+        description: 'Duration in minutes'
+        required: false
+        default: '180'
+        type: string
+      platforms:
+        description: 'Platforms to publish to (comma-separated)'
+        required: false
+        default: 'luma,meetup'
+        type: string
+      dry_run:
+        description: 'Dry run mode (preview without creating)'
+        required: false
+        default: false
+        type: boolean
+      format:
+        description: 'Event format'
+        required: false
+        default: 'in-person'
+        type: choice
+        options:
+          - in-person
+          - online
+          - hybrid
+      online_url:
+        description: 'Online meeting URL (for online/hybrid events)'
+        required: false
+        type: string
+
+jobs:
+  create-event:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Build project
+        run: bun run build
+
+      - name: Validate date format
+        run: |
+          DATE="${{ inputs.date }}"
+          if ! [[ "$DATE" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]]; then
+            echo "❌ Invalid date format: $DATE"
+            echo "Expected format: YYYY-MM-DD"
+            exit 1
+          fi
+          echo "✅ Date format valid: $DATE"
+
+      - name: Validate time format
+        run: |
+          TIME="${{ inputs.time }}"
+          if ! [[ "$TIME" =~ ^[0-9]{2}:[0-9]{2}$ ]]; then
+            echo "❌ Invalid time format: $TIME"
+            echo "Expected format: HH:mm (24-hour)"
+            exit 1
+          fi
+          echo "✅ Time format valid: $TIME"
+
+      - name: Validate date is in future
+        run: |
+          EVENT_DATE="${{ inputs.date }} ${{ inputs.time }}"
+          EVENT_TIMESTAMP=$(date -d "$EVENT_DATE" +%s)
+          CURRENT_TIMESTAMP=$(date +%s)
+          
+          if [ $EVENT_TIMESTAMP -le $CURRENT_TIMESTAMP ]; then
+            echo "❌ Event date must be in the future"
+            echo "Event date: $EVENT_DATE"
+            echo "Current time: $(date)"
+            exit 1
+          fi
+          echo "✅ Event date is in the future"
+
+      - name: Create event (dry run)
+        if: ${{ inputs.dry_run }}
+        run: |
+          echo "🔍 Running in dry-run mode..."
+          ONLINE_URL_ARG=""
+          if [ -n "${{ inputs.online_url }}" ]; then
+            ONLINE_URL_ARG="--online-url ${{ inputs.online_url }}"
+          fi
+          node dist/index.js create \
+            --template ${{ inputs.template }} \
+            --date ${{ inputs.date }} \
+            --time ${{ inputs.time }} \
+            --duration ${{ inputs.duration }} \
+            --platforms ${{ inputs.platforms }} \
+            --format ${{ inputs.format }} \
+            $ONLINE_URL_ARG \
+            --dry-run
+        env:
+          LUMA_API_KEY: ${{ secrets.LUMA_API_KEY }}
+          MEETUP_ACCESS_TOKEN: ${{ secrets.MEETUP_ACCESS_TOKEN }}
+          MEETUP_GROUP_URLNAME: ${{ secrets.MEETUP_GROUP_URLNAME }}
+
+      - name: Create event
+        if: ${{ !inputs.dry_run }}
+        id: create_event
+        run: |
+          echo "🚀 Creating event on platforms: ${{ inputs.platforms }}"
+          ONLINE_URL_ARG=""
+          if [ -n "${{ inputs.online_url }}" ]; then
+            ONLINE_URL_ARG="--online-url ${{ inputs.online_url }}"
+          fi
+          node dist/index.js create \
+            --template ${{ inputs.template }} \
+            --date ${{ inputs.date }} \
+            --time ${{ inputs.time }} \
+            --duration ${{ inputs.duration }} \
+            --platforms ${{ inputs.platforms }} \
+            --format ${{ inputs.format }} \
+            $ONLINE_URL_ARG > event_output.txt 2>&1
+          
+          cat event_output.txt
+          
+          if grep -q "✓ Event created successfully" event_output.txt; then
+            echo "✅ Event created successfully"
+            echo "event_created=true" >> $GITHUB_OUTPUT
+          else
+            echo "❌ Event creation failed"
+            echo "event_created=false" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+        env:
+          LUMA_API_KEY: ${{ secrets.LUMA_API_KEY }}
+          MEETUP_ACCESS_TOKEN: ${{ secrets.MEETUP_ACCESS_TOKEN }}
+          MEETUP_GROUP_URLNAME: ${{ secrets.MEETUP_GROUP_URLNAME }}
+
+      - name: Extract event URLs
+        if: ${{ !inputs.dry_run && steps.create_event.outputs.event_created == 'true' }}
+        run: |
+          echo "📋 Event URLs:"
+          grep -E "(Luma:|Meetup:)" event_output.txt || echo "URLs not found in output"
+
+      - name: Create issue on failure
+        if: ${{ failure() && !inputs.dry_run }}
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issueTitle = `Event Creation Failed - ${{ inputs.template }} - ${{ inputs.date }}`;
+            const issueBody = `## Event Creation Failed
+            
+            **Template**: ${{ inputs.template }}
+            **Date**: ${{ inputs.date }}
+            **Time**: ${{ inputs.time }}
+            **Duration**: ${{ inputs.duration }} minutes
+            **Platforms**: ${{ inputs.platforms }}
+            **Format**: ${{ inputs.format }}
+            **Online URL**: ${{ inputs.online_url || 'N/A' }}
+            
+            ### Workflow Details
+            - **Run ID**: \${context.runId}
+            - **Run Number**: \${context.runNumber}
+            - **Triggered by**: \${context.actor}
+            - **Workflow**: \${context.workflow}
+            
+            ### Logs
+            Check the [workflow run](\${context.serverUrl}/\${context.repo.owner}/\${context.repo.repo}/actions/runs/\${context.runId}) for detailed logs.
+            `;
+            
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: issueTitle,
+              body: issueBody,
+              labels: ['event-creation', 'automated', 'failed']
+            });
+
+      - name: Cleanup
+        if: always()
+        run: |
+          rm -f event_output.txt

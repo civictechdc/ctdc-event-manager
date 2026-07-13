@@ -1,0 +1,26 @@
+{
+  "name": "dc-tech-event-manager",
+  "build": {
+    "dockerfile": "../docker/Dockerfile.dev",
+    "context": ".."
+  },
+  "workspaceFolder": "/workspaces/dc-tech-event-manager",
+  "mounts": [
+    "source=dc-tech-event-manager-node-modules,target=/workspaces/dc-tech-event-manager/node_modules,type=volume"
+  ],
+  "postCreateCommand": "bun install --frozen-lockfile",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "oven.bun-vscode",
+        "dbaeumer.vscode-eslint",
+        "vitest.explorer",
+        "redhat.vscode-yaml",
+        "ms-azuretools.vscode-docker"
+      ]
+    },
+    "zed": {
+      "extensions": ["dockerfile", "yaml"]
+    }
+  }
+}
