@@ -1,0 +1,14 @@
+id: disabled-template
+name: Disabled Template
+description: This template should not be loaded
+venue:
+  name: Disabled Venue
+  address: 456 Disabled St
+  city: Disabled City
+  state: DS
+  zip: "67890"
+eventType: disabled
+defaultDuration: 30
+defaultStartTime: "09:00"
+defaultTitle: "Disabled {{eventType}}"
+defaultDescription: "Should not appear"

@@ -1,0 +1,14 @@
+id: valid-template
+name: Valid Template
+description: A valid test template
+venue:
+  name: Test Venue
+  address: 123 Test St
+  city: Test City
+  state: TS
+  zip: "12345"
+eventType: test
+defaultDuration: 60
+defaultStartTime: "12:00"
+defaultTitle: "Test {{eventType}}"
+defaultDescription: "Event at {{venue.name}}"

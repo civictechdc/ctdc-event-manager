@@ -1,0 +1,10 @@
+version: "1.0"
+settings:
+  cacheTemplates: true
+
+templates:
+  - dir: valid-template
+    enabled: true
+    
+  - dir: disabled-template
+    enabled: false
