@@ -1,0 +1,41 @@
+id: taoti-project-night
+name: Taoti Project Night
+description: Monthly project night at Taoti Creative
+version: "1.0"
+enabled: true
+
+venue:
+  name: Taoti Creative
+  address: 1333 H St NW
+  city: Washington
+  state: DC
+  zip: "20005"
+  coordinates:
+    latitude: 38.8997
+    longitude: -77.0303
+  metroStation: Gallery Place-Chinatown
+
+eventType: project-night
+defaultDuration: 180
+defaultStartTime: "18:00"
+defaultTimezone: "America/New_York"
+
+defaultTitle: "{{venue.name}} Project Night"
+defaultDescription: |
+  ## What to Expect
+  
+  Join us at **{{venue.name}}** for our monthly project night!
+  
+  📍 **Location**: {{venue.address}}, {{venue.city}}, {{venue.state}} {{venue.zip}}
+  
+  🕕 **When**: {{date}} at {{startTime}}
+  
+  ### Getting There
+  
+  Metro: {{venue.metroStation}}
+  
+  All skill levels welcome!
+
+custom:
+  sponsor: Taoti Creative
+  contactEmail: events@taoti.com

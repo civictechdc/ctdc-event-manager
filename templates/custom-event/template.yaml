@@ -1,0 +1,27 @@
+id: custom-event
+name: Custom Event
+description: A customizable event template with variable substitution
+version: "1.0"
+enabled: true
+
+venue:
+  name: Online
+  address: Virtual
+  city: ""
+  state: ""
+  zip: ""
+
+eventType: meetup
+defaultDuration: 60
+defaultStartTime: "12:00"
+defaultTimezone: "America/New_York"
+
+defaultTitle: "{{eventType}} at {{venue.name}}"
+defaultDescription: |
+  ## Join Us!
+  
+  Event: {{eventType}}
+  When: {{date}} at {{startTime}}
+  Duration: {{duration}} minutes
+  
+  All welcome!

@@ -1,0 +1,13 @@
+version: "1.0"
+settings:
+  cacheTemplates: true
+
+templates:
+  - dir: taoti-project-night
+    enabled: true
+    
+  - dir: virtru-project-night
+    enabled: true
+    
+  - dir: custom-event
+    enabled: true

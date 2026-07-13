@@ -1,0 +1,42 @@
+id: virtru-project-night
+name: Virtru Project Night
+description: Monthly project night at Virtru
+version: "1.0"
+enabled: true
+
+venue:
+  name: Virtru
+  address: 1608 Village Market St SE
+  city: Washington
+  state: DC
+  zip: "20003"
+  coordinates:
+    latitude: 38.8762
+    longitude: -76.9885
+
+eventType: project-night
+defaultDuration: 180
+defaultStartTime: "18:00"
+defaultTimezone: "America/New_York"
+
+defaultTitle: "{{venue.name}} Project Night"
+defaultDescription: |
+  ## What to Expect
+  
+  Join us at **{{venue.name}}** for our monthly project night!
+  
+  📍 **Location**: {{venue.address}}, {{venue.city}}, {{venue.state}} {{venue.zip}}
+  
+  🕕 **When**: {{date}} at {{startTime}}
+  
+  ### Focus Areas
+  
+  - Privacy-focused civic tech projects
+  - Data security workshops
+  - Collaborative coding sessions
+  
+  All skill levels welcome!
+
+custom:
+  sponsor: Virtru
+  focus: Privacy & Security
