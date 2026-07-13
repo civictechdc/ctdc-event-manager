@@ -505,7 +505,7 @@ registry.register(new MeetupPlatform(accessToken, groupUrlname));
 const luma = registry.get('luma');
 
 // Check existence
-if (registry.has('eventbrite')) {
+if (registry.has('meetup')) {
   // ...
 }
 ```

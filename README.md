@@ -444,57 +444,9 @@ dc-tech-event-manager/
 | Testing | Vitest | Unit/integration tests |
 | Package Manager | Bun | Fast dependency management |
 
-## Adding New Platforms
+## Supported Platforms
 
-To add support for a new platform (e.g., Eventbrite):
-
-1. **Implement the EventPlatform interface**:
-
-```typescript
-// src/platforms/eventbrite/eventbrite-platform.ts
-export class EventbritePlatform implements EventPlatform {
-  readonly name = 'eventbrite';
-  readonly displayName = 'Eventbrite';
-  
-  async createEvent(event: Event, context?: PlatformContext): Promise<PlatformResult> {
-    // Implementation
-  }
-  
-  async uploadImage(image: ImageConfig): Promise<string> {
-    // Implementation
-  }
-}
-```
-
-2. **Create platform client**:
-
-```typescript
-// src/platforms/eventbrite/eventbrite-client.ts
-export class EventbriteClient {
-  // API client implementation
-}
-```
-
-3. **Register in EventService**:
-
-```typescript
-// src/services/event-service.ts
-import { EventbritePlatform } from '../platforms/eventbrite/eventbrite-platform';
-
-// In constructor:
-this.registry.register(new EventbritePlatform(config.eventbriteApiKey));
-```
-
-4. **Add configuration**:
-
-```bash
-# .env.example
-EVENTBRITE_API_KEY=your_api_key_here
-```
-
-5. **Update CLI**:
-
-Add platform-specific options to the create command if needed.
+The current release supports Luma and Meetup. Platform selection is configured with `ENABLED_PLATFORMS` or overridden per invocation with `--platforms`.
 
 ## Troubleshooting
 
