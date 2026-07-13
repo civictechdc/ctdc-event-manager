@@ -38,7 +38,28 @@ bun install
 
 # Or with npm
 npm install
+```
 
+### Git Quality Hook
+
+Prerequisites: Git 2.54+ and Bun.
+
+Install the pre-commit hook:
+
+```sh
+sh scripts/setup-git-hooks.sh
+```
+
+Verify it is registered:
+
+```sh
+git hook list pre-commit
+```
+
+The hook runs `bun run lint` then `bun run typecheck` before each commit.
+To bypass the local hook, use `git commit --no-verify`; CI still enforces quality checks.
+
+```bash
 # Build the project
 bun run build
 
