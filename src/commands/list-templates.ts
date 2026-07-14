@@ -1,5 +1,5 @@
 import chalk from 'chalk';
-import { listTemplatesAsync } from '../templates/template-manager';
+import { listTemplatesAsync } from '../templates/template-manager.js';
 
 export interface ListTemplatesOptions {
   json?: boolean;

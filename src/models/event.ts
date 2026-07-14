@@ -1,5 +1,5 @@
-import { Venue } from './venue';
-import { ImageConfig } from './image';
+import { Venue } from './venue.js';
+import { ImageConfig } from './image.js';
 
 export type EventFormat = 'in-person' | 'online' | 'hybrid';
 

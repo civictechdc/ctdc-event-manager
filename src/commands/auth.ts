@@ -1,5 +1,5 @@
 import chalk from 'chalk';
-import { MeetupAuth } from '../platforms/meetup/meetup-auth';
+import { MeetupAuth } from '../platforms/meetup/meetup-auth.js';
 
 export interface AuthOptions {
   platform: string;

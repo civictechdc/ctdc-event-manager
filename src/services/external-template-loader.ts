@@ -1,8 +1,8 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import * as yaml from 'yaml';
-import { EventTemplate } from '../models/template';
-import { TemplateIndex, isTemplateReference } from '../types/template-types';
+import { EventTemplate } from '../models/template.js';
+import { TemplateIndex, isTemplateReference } from '../types/template-types.js';
 
 export class ExternalTemplateLoader {
   private templatesPath: string;

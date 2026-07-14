@@ -1,9 +1,9 @@
-import { EventPlatform, PlatformResult, PlatformContext, VenueMatch } from '../platform.interface';
-import { Event, EventFormat } from '../../models/event';
-import { MeetupGraphQLClient } from './meetup-client';
-import { MeetupAuth } from './meetup-auth';
-import { CreateEventInput, MeetupEventType } from './meetup-types';
-import { MeetupApiError, MeetupAuthError } from './meetup-errors';
+import { EventPlatform, PlatformResult, PlatformContext, VenueMatch } from '../platform.interface.js';
+import { Event, EventFormat } from '../../models/event.js';
+import { MeetupGraphQLClient } from './meetup-client.js';
+import { MeetupAuth } from './meetup-auth.js';
+import { CreateEventInput, MeetupEventType } from './meetup-types.js';
+import { MeetupApiError, MeetupAuthError } from './meetup-errors.js';
 
 export class MeetupPlatform implements EventPlatform {
   readonly name = 'meetup';

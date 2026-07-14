@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 import { Command } from 'commander';
-import { createCommand } from './commands/create-event';
-import { listTemplatesCommand, ListTemplatesOptions } from './commands/list-templates';
-import { authCommand } from './commands/auth';
+import { createCommand } from './commands/create-event.js';
+import { listTemplatesCommand, ListTemplatesOptions } from './commands/list-templates.js';
+import { authCommand } from './commands/auth.js';
 
 const program = new Command();
 

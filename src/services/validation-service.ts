@@ -1,5 +1,5 @@
-import { Event } from '../models/event';
-import { Venue } from '../models/venue';
+import { Event } from '../models/event.js';
+import { Venue } from '../models/venue.js';
 
 export class ValidationService {
   validateEvent(event: Event): void {

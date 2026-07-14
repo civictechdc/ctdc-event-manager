@@ -1,4 +1,4 @@
-import { EventPlatform } from './platform.interface';
+import { EventPlatform } from './platform.interface.js';
 
 export class PlatformRegistry {
   private platforms: Map<string, EventPlatform> = new Map();
