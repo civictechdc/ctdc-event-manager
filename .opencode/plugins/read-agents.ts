@@ -2,6 +2,8 @@ import { readFileSync, existsSync } from "node:fs"
 import { join } from "node:path"
 
 export const ReadAgentsPlugin = async ({ client, directory }) => {
+  const rulesBySession = new Map<string, string[]>()
+
   return {
     event: async ({ event }) => {
       if (event.type !== "session.created") return
@@ -11,16 +13,13 @@ export const ReadAgentsPlugin = async ({ client, directory }) => {
 
       const sessionId = info.id
       const dir = info.directory || directory
-      const parts: Array<{ type: "text"; text: string }> = []
+      const rules: string[] = []
 
       const agentsPath = join(dir, "AGENTS.md")
       if (existsSync(agentsPath)) {
         try {
           const content = readFileSync(agentsPath, "utf-8")
-          parts.push({
-            type: "text",
-            text: `[Session Start Hook] AGENTS.md — read and follow these instructions:\n\n${content}`,
-          })
+          rules.push(`[Session Start Hook] AGENTS.md — read and follow these instructions:\n\n${content}`)
         } catch {}
       }
 
@@ -35,30 +34,14 @@ export const ReadAgentsPlugin = async ({ client, directory }) => {
       if (resolvedLocalPath) {
         try {
           const content = readFileSync(resolvedLocalPath, "utf-8")
-          parts.push({
-            type: "text",
-            text: `[Session Start Hook] AGENTS.local.md — read and follow these local project preferences:\n\n${content}`,
-          })
+          rules.push(`[Session Start Hook] AGENTS.local.md — read and follow these local project preferences:\n\n${content}`)
         } catch {}
       }
 
-      if (parts.length === 0) return
+      if (rules.length === 0) return
 
       try {
-        await client.session.prompt({
-          path: { id: sessionId },
-          body: {
-            noReply: true,
-            parts,
-          },
-        })
-
-        await client.tui.showToast({
-          body: {
-            message: "AGENTS.md and AGENTS.local.md loaded at session start",
-            variant: "info",
-          },
-        })
+        rulesBySession.set(sessionId, rules)
       } catch (e) {
         await client.app.log({
           body: {
@@ -68,6 +51,10 @@ export const ReadAgentsPlugin = async ({ client, directory }) => {
           },
         })
       }
+    },
+    "experimental.chat.system.transform": async ({ sessionID }, output) => {
+      if (!sessionID) return
+      output.system.push(...(rulesBySession.get(sessionID) ?? []))
     },
   }
 }
