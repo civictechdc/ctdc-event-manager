@@ -33,10 +33,10 @@ echo ""
 echo "✓ Validating Dockerfile syntax..."
 
 # Check Dockerfile for common issues
-if grep -q "FROM node:20-alpine" docker/Dockerfile; then
-	echo "  ✓ Uses Node 20 Alpine base"
+if grep -q "FROM node:24.18.0-alpine" docker/Dockerfile; then
+	echo "  ✓ Uses Node 24.18.0 Alpine base"
 else
-	echo "  ✗ Should use Node 20 Alpine"
+	echo "  ✗ Should use Node 24.18.0 Alpine"
 	exit 1
 fi
 
