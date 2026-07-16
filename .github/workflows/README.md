@@ -419,16 +419,22 @@ jobs:
         # Your logic here
 ```
 
-### Matrix Strategy
+### Test Runner
 
-Test on multiple platforms:
+The `test` job runs on a single Ubuntu runner and sets up the exact Node.js version used by this migration:
 
 ```yaml
-strategy:
-  matrix:
-    os: [ubuntu-latest, macos-latest, windows-latest]
-    node: 24.18.0
+test:
+  runs-on: ubuntu-latest
+
+  steps:
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 24.18.0
 ```
+
+The `docker` job also runs on `ubuntu-latest` and depends on the `test` job completing successfully.
 
 ---
 
