@@ -19,7 +19,8 @@ This document explains the GitHub Actions workflows configured for the DC Tech E
 6. Uploads coverage to Codecov
 7. Builds the project
 8. Verifies build artifacts
-9. Builds and tests Docker image
+9. Verifies native Node runtime
+10. Builds and tests Docker image
 
 **Status Badge:**
 ```markdown
