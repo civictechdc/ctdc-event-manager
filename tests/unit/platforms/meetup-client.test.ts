@@ -1,8 +1,23 @@
-import { describe, it, expect } from 'vitest';
+import axios from 'axios';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { MeetupGraphQLClient } from '@/platforms/meetup/meetup-client';
-import { MeetupAuthError } from '@/platforms/meetup/meetup-errors';
+import {
+  MeetupAuthError,
+  MeetupGraphQLError,
+  MeetupNetworkError
+} from '@/platforms/meetup/meetup-errors';
+
+vi.mock('axios', () => ({
+  default: { post: vi.fn() }
+}));
+
+const axiosPost = vi.mocked(axios.post);
 
 describe('MeetupGraphQLClient', () => {
+  beforeEach(() => {
+    axiosPost.mockReset();
+  });
+
   describe('constructor', () => {
     it('should throw error with empty access token', () => {
       expect(() => new MeetupGraphQLClient('')).toThrow(MeetupAuthError);
@@ -58,16 +73,58 @@ describe('MeetupGraphQLClient', () => {
   });
 
   describe('createEvent', () => {
-    it('should be a method', () => {
+    it('sends the event mutation and returns the API result', async () => {
       const client = new MeetupGraphQLClient('test-token');
-      expect(typeof client.createEvent).toBe('function');
+      axiosPost.mockResolvedValueOnce({
+        data: { data: { createEvent: { event: { id: '1', eventUrl: 'https://meetup.com/event/1' }, errors: [] } } }
+      } as any);
+
+      await expect(client.createEvent({ title: 'Event' } as any)).resolves.toEqual({
+        event: { id: '1', eventUrl: 'https://meetup.com/event/1' },
+        errors: []
+      });
+      expect(axiosPost).toHaveBeenCalledWith(
+        'https://api.meetup.com/gql-ext',
+        expect.objectContaining({ variables: { input: { title: 'Event' } } }),
+        expect.objectContaining({ headers: expect.objectContaining({ Authorization: 'Bearer test-token' }) })
+      );
     });
   });
 
   describe('searchVenues', () => {
-    it('should be a method', () => {
+    it('maps venue search results with match scores', async () => {
       const client = new MeetupGraphQLClient('test-token');
-      expect(typeof client.searchVenues).toBe('function');
+      axiosPost.mockResolvedValueOnce({
+        data: {
+          data: {
+            group: {
+              venues: {
+                edges: [{ node: { id: '1', name: 'Test Venue', address: '123 Test St', city: 'Washington', state: 'DC' } }]
+              }
+            }
+          }
+        }
+      } as any);
+
+      await expect(client.searchVenues('civictechdc', 'Test Venue')).resolves.toEqual([{
+        id: '1', name: 'Test Venue', address: '123 Test St', city: 'Washington', state: 'DC', score: 0.9
+      }]);
+    });
+  });
+
+  describe('query', () => {
+    it('throws GraphQL errors returned by Meetup', async () => {
+      const client = new MeetupGraphQLClient('test-token');
+      axiosPost.mockResolvedValueOnce({ data: { errors: [{ message: 'Invalid event' }] } } as any);
+
+      await expect(client.query('query { event }')).rejects.toBeInstanceOf(MeetupGraphQLError);
+    });
+
+    it('throws a network error when the response has no data', async () => {
+      const client = new MeetupGraphQLClient('test-token');
+      axiosPost.mockResolvedValueOnce({ data: {} } as any);
+
+      await expect(client.query('query { event }')).rejects.toBeInstanceOf(MeetupNetworkError);
     });
   });
 });
