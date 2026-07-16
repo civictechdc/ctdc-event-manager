@@ -22,7 +22,7 @@ This guide helps you diagnose and resolve common issues with the DC Tech Event M
 Run these commands to verify your setup:
 
 ```bash
-# 1. Check Node.js version (must be 18+)
+# 1. Check Node.js version (must be 24.18.0)
 node --version
 
 # 2. Check dependencies are installed
@@ -650,7 +650,7 @@ docker run -it --env-file .env event-publisher --help
 3. **Update base image:**
    ```dockerfile
    # Use specific version
-   FROM node:20-alpine
+   FROM node:24.18.0-alpine
    ```
 
 ## GitHub Actions Issues

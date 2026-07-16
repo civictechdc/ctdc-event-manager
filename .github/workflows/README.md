@@ -11,7 +11,7 @@ This document explains the GitHub Actions workflows configured for the DC Tech E
 - Pull requests to `main` branch
 
 **What it does:**
-1. Runs on Node.js 18.x and 20.x
+1. Runs on Node.js 24.18.0
 2. Installs dependencies with Bun
 3. Runs linter
 4. Performs type checking
@@ -426,7 +426,7 @@ Test on multiple platforms:
 strategy:
   matrix:
     os: [ubuntu-latest, macos-latest, windows-latest]
-    node: [18.x, 20.x]
+    node: 24.18.0
 ```
 
 ---
