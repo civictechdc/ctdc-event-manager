@@ -1,4 +1,4 @@
-import { TemplateContext } from '../types/template-types';
+import { TemplateContext } from '../types/template-types.js';
 
 export class TemplateEngine {
   render(template: string, context: Record<string, unknown>): string {

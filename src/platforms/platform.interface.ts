@@ -1,6 +1,6 @@
-import { Event } from '../models/event';
-import { Venue } from '../models/venue';
-import { ImageConfig } from '../models/image';
+import { Event } from '../models/event.js';
+import { Venue } from '../models/venue.js';
+import { ImageConfig } from '../models/image.js';
 
 export interface PlatformContext {
   lumaEventUrl?: string;

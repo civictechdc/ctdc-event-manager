@@ -1,4 +1,4 @@
-import { EventTemplate } from '../models/template';
+import { EventTemplate } from '../models/template.js';
 
 export interface TemplateIndex {
   version: string;

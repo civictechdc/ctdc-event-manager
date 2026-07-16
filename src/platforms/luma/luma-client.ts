@@ -1,15 +1,15 @@
-import { HttpClient } from '../../utils/http-client';
+import { HttpClient } from '../../utils/http-client.js';
 import { 
   LumaEventRequest, 
   LumaEventResponse, 
   LumaUploadUrlResponse 
-} from './luma-types';
+} from './luma-types.js';
 import { 
   LumaApiError, 
   LumaAuthError, 
   LumaRateLimitError, 
   LumaNetworkError 
-} from './luma-errors';
+} from './luma-errors.js';
 import axios, { AxiosError, AxiosInstance } from 'axios';
 import * as fs from 'fs/promises';
 import * as path from 'path';

@@ -1,15 +1,15 @@
 import { Command } from 'commander';
 import inquirer, { DistinctQuestion } from 'inquirer';
 import chalk from 'chalk';
-import { Event, EventFormat } from '../models/event';
-import { EventService } from '../services/event-service';
-import { loadConfig } from '../utils/config';
-import { getTemplateAsync, listTemplatesAsync, templateExistsAsync } from '../templates/template-manager';
-import { EventTemplate } from '../models/template';
-import { Venue } from '../models/venue';
-import { ImageConfig } from '../models/image';
+import { Event, EventFormat } from '../models/event.js';
+import { EventService } from '../services/event-service.js';
+import { loadConfig } from '../utils/config.js';
+import { getTemplateAsync, listTemplatesAsync, templateExistsAsync } from '../templates/template-manager.js';
+import { EventTemplate } from '../models/template.js';
+import { Venue } from '../models/venue.js';
+import { ImageConfig } from '../models/image.js';
 import { format, parse, isFuture, isValid } from 'date-fns';
-import { EventCreationResult, PublishOutcome } from '../platforms/platform.interface';
+import { EventCreationResult, PublishOutcome } from '../platforms/platform.interface.js';
 
 export interface CreateEventOptions {
   template?: string;

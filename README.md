@@ -22,7 +22,7 @@ A TypeScript CLI tool for creating and publishing events to Luma and Meetup.com 
 
 ### Prerequisites
 
-- Node.js 18.x or higher
+- Node.js 24.18.0
 - Bun (recommended) or npm/pnpm
 - Docker (optional, for containerized usage)
 

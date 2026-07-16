@@ -1,6 +1,6 @@
-import { Event } from '../models/event';
-import { Config } from '../utils/config';
-import { PlatformRegistry } from '../platforms/platform-registry';
+import { Event } from '../models/event.js';
+import { Config } from '../utils/config.js';
+import { PlatformRegistry } from '../platforms/platform-registry.js';
 import {
   EventCreationResult,
   EventPlatform,
@@ -10,10 +10,10 @@ import {
   PublishOutcome,
   PublishOutcomeFailed,
   PublishWarning,
-} from '../platforms/platform.interface';
-import { ValidationService } from './validation-service';
-import { LumaPlatform } from '../platforms/luma/luma-platform';
-import { MeetupPlatform } from '../platforms/meetup/meetup-platform';
+} from '../platforms/platform.interface.js';
+import { ValidationService } from './validation-service.js';
+import { LumaPlatform } from '../platforms/luma/luma-platform.js';
+import { MeetupPlatform } from '../platforms/meetup/meetup-platform.js';
 
 const KNOWN_PLATFORMS = ['luma', 'meetup'];
 

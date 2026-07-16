@@ -1,8 +1,8 @@
-import { EventTemplate } from '../models/template';
-import { getTemplate as getBuiltInTemplate, listTemplates as listBuiltInTemplates } from './venue-templates';
-import { ExternalTemplateLoader } from '../services/external-template-loader';
-import { TemplateEngine } from '../services/template-engine';
-import { TemplateContext } from '../types/template-types';
+import { EventTemplate } from '../models/template.js';
+import { getTemplate as getBuiltInTemplate, listTemplates as listBuiltInTemplates } from './venue-templates.js';
+import { ExternalTemplateLoader } from '../services/external-template-loader.js';
+import { TemplateEngine } from '../services/template-engine.js';
+import { TemplateContext } from '../types/template-types.js';
 
 export { getBuiltInTemplate as getTemplate, listBuiltInTemplates as listTemplates };
 

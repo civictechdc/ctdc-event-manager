@@ -1,10 +1,10 @@
-import { EventPlatform, PlatformResult, PlatformContext } from '../platform.interface';
-import { Event } from '../../models/event';
-import { ImageConfig, isUploadImage, isUrlImage } from '../../models/image';
-import { LumaClient } from './luma-client';
-import { LumaEventRequest } from './luma-types';
-import { formatVenueAddress } from '../../models/venue';
-import { LumaApiError, LumaAuthError } from './luma-errors';
+import { EventPlatform, PlatformResult, PlatformContext } from '../platform.interface.js';
+import { Event } from '../../models/event.js';
+import { ImageConfig, isUploadImage, isUrlImage } from '../../models/image.js';
+import { LumaClient } from './luma-client.js';
+import { LumaEventRequest } from './luma-types.js';
+import { formatVenueAddress } from '../../models/venue.js';
+import { LumaApiError, LumaAuthError } from './luma-errors.js';
 
 export class LumaPlatform implements EventPlatform {
   readonly name = 'luma';

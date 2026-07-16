@@ -11,7 +11,7 @@ This document explains the GitHub Actions workflows configured for the DC Tech E
 - Pull requests to `main` branch
 
 **What it does:**
-1. Runs on Node.js 18.x and 20.x
+1. Runs on Node.js 24.18.0
 2. Installs dependencies with Bun
 3. Runs linter
 4. Performs type checking
@@ -19,7 +19,8 @@ This document explains the GitHub Actions workflows configured for the DC Tech E
 6. Uploads coverage to Codecov
 7. Builds the project
 8. Verifies build artifacts
-9. Builds and tests Docker image
+9. Verifies native Node runtime
+10. Builds and tests Docker image
 
 **Status Badge:**
 ```markdown
@@ -418,16 +419,22 @@ jobs:
         # Your logic here
 ```
 
-### Matrix Strategy
+### Test Runner
 
-Test on multiple platforms:
+The `test` job runs on a single Ubuntu runner and sets up the exact Node.js version used by this migration:
 
 ```yaml
-strategy:
-  matrix:
-    os: [ubuntu-latest, macos-latest, windows-latest]
-    node: [18.x, 20.x]
+test:
+  runs-on: ubuntu-latest
+
+  steps:
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 24.18.0
 ```
+
+The `docker` job also runs on `ubuntu-latest` and depends on the `test` job completing successfully.
 
 ---
 

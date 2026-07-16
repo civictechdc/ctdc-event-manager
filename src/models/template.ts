@@ -1,6 +1,6 @@
-import { Venue } from './venue';
-import { ImageConfig } from './image';
-import { EventFormat } from './event';
+import { Venue } from './venue.js';
+import { ImageConfig } from './image.js';
+import { EventFormat } from './event.js';
 
 export interface EventTemplate {
   id: string;

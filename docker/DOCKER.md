@@ -50,7 +50,7 @@ docker-compose -f docker/docker-compose.yml --profile cache up
 2. **Production stage**: Minimal Node.js Alpine image
 
 **Features:**
-- Node.js 20 Alpine (minimal footprint)
+- Node.js 24.18.0 Alpine (minimal footprint)
 - Non-root user (eventuser:1001)
 - Compiled JavaScript only (no source code)
 - Production dependencies only
@@ -286,7 +286,7 @@ USER eventuser
 Alpine Linux reduces attack surface:
 
 ```dockerfile
-FROM node:20-alpine
+FROM node:24.18.0-alpine
 ```
 
 ### 3. No Secrets in Image

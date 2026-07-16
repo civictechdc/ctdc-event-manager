@@ -5,14 +5,14 @@ import {
   GroupVenuesResponse,
   GraphQLResponse,
   VenueNode
-} from './meetup-types';
+} from './meetup-types.js';
 import {
   MeetupApiError,
   MeetupAuthError,
   MeetupGraphQLError,
   MeetupNetworkError
-} from './meetup-errors';
-import { VenueMatch } from '../platform.interface';
+} from './meetup-errors.js';
+import { VenueMatch } from '../platform.interface.js';
 import { AxiosError } from 'axios';
 
 export class MeetupGraphQLClient {

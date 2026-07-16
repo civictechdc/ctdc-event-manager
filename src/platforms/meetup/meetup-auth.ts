@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { AuthTokens, OAuthConfig } from './meetup-auth-types';
+import { AuthTokens, OAuthConfig } from './meetup-auth-types.js';
 
 export class MeetupAuth {
   private clientId: string;
