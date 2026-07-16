@@ -429,7 +429,7 @@ test:
 
   steps:
     - name: Setup Node.js
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@v5
       with:
         node-version: 24.18.0
 ```
