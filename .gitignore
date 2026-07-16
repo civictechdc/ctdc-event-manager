@@ -52,6 +52,7 @@ tmp/
 temp/
 
 # Project
+.worktrees/
 AGENTS.local.md
 .agent/
 .agents/skills/
